@@ -1,0 +1,165 @@
+.App {
+  text-align: center;
+  box-sizing: border-box;
+}
+
+.App-title {
+  font-size: 2.5em;
+}
+
+.App-intro {
+  font-size: large;
+}
+
+
+ul{
+  list-style-type: none;
+  padding:0px;
+}
+
+.btn{
+  width:150px;
+  padding:5px;
+  font-size: 1.2rem;
+  font-weight: bold;
+  color:white;
+  cursor: pointer;
+  margin:10px;
+  border-radius: 5px;
+  background-color:blue;
+  box-shadow: 1px 1px 2px gray, 0px 2px 2px black;
+}
+
+.btn:active{
+  transform: translateY(1px);
+  opacity: 0.9;
+}
+
+.btn.btn-easy{
+  background: green;
+}
+.btn.btn-medium{
+  background: #ef610e;
+}
+.btn.btn-hard{
+  background: red;
+}
+
+.btn:focus{
+  outline: none;
+}
+
+.wrapper{
+  width:560px;
+  height:560px;
+  position: relative;
+  margin:20px auto;
+}
+
+.board{
+  display: flex;
+  flex-wrap: wrap;
+  border: solid;
+  justify-content: center;
+  align-items: center;
+}
+
+.cell{
+  width:60px;
+  height:60px;
+  border:0.5px solid gray;
+  font-size:1.5rem;
+  font-weight: bold;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.cell-input{
+  border:none;
+  width: 55px;
+  text-align: center;
+  height: 55px;
+  font-size: 1.5rem;
+  cursor: pointer;
+}
+
+.slot{
+  color:blue;
+  font-weight: bold;
+  user-select: none;
+}
+
+.cell[data-x="2"], .cell[data-x="5"]{
+  border-bottom:3px solid black;
+}
+
+.cell[data-y="2"], .cell[data-y="5"]{
+  border-right:3px solid black;
+}
+
+.buttons{
+  width:100%;
+  display:none;
+}
+
+.num-button{
+  width:11%;
+  height:40px;
+  padding:5px;
+  cursor:pointer;
+}
+
+@media screen and (max-width:600px){
+  .btn{
+    width:100px;
+  }
+
+  .wrapper{
+    width:380px;
+    height:400px;
+  }
+
+  .cell{
+    width:40px;
+    height:40px;
+  }
+
+  .cell-input{
+    width: 38px;
+    height: 38px;
+  }
+
+  .buttons{
+    display:block;
+    width:100%;
+    margin-top:20px;
+  }
+
+  .num-button{
+    width:11%;
+    height: 40px;
+    color: white;
+    padding: 5px;
+    border-radius: 5px;
+    background-color: #302c61;
+    cursor: pointer;
+    font-size: 1.5rem;
+  }
+
+  .num-button:focus{
+    outline:none;
+  }
+
+  .num-button:nth-of-type(2n){
+    transform: rotate(5deg);
+  }
+
+  .num-button:nth-of-type(2n+1){
+    transform: rotate(-5deg);
+  }
+
+  .num-button:active{
+    background-color: #4d41de;
+  }
+}
