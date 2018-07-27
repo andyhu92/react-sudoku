@@ -18,6 +18,8 @@ export default class Sudoku extends Component {
         }
     }
 
+    errorCells = []
+
     initArr(){
         let arr = new Array(SIZE)
         for (let i = 0; i < SIZE; i++) {
@@ -48,6 +50,7 @@ export default class Sudoku extends Component {
         if(state){
             state.startTime = Date.now() - state.usedTime * 1000
             state.usedTime = null
+            state.errorCells = []
             this.setState({
                 ...state
             })
@@ -62,7 +65,14 @@ export default class Sudoku extends Component {
         this.fillValues()
         this.fillRemaining(0, SQRT)
         this.emptyCells(mode);
-        this.setState({ arr: this.arr, originalArr: this.deepClone(this.arr), highlight:null, selectedSlot:null, startTime:null })
+        this.setState({
+            arr: this.arr,
+            originalArr: this.deepClone(this.arr),
+            highlight:null,
+            selectedSlot:null,
+            startTime:null,
+            errorCells:[]
+        })
     }
 
     deepClone(arr) {
@@ -241,6 +251,15 @@ export default class Sudoku extends Component {
         return true
     }
 
+    checkErrorAndWin = (x,y,val) => {
+        if(this.checkError(x,y,val)) {
+            let tmp = this.deepClone(this.state.arr)
+            tmp[x][y] = ""
+            window.setTimeout(() => this.setState({arr: tmp, errorCells:[]}),500)
+        }
+        else this.checkWin()
+    }
+    //When player type on input
     handleChange = (e) => {
         let val = e.target.value
         if (val != "" && !/[0-9]/.test(val)) return false
@@ -250,9 +269,46 @@ export default class Sudoku extends Component {
         let x = +data.x, y = +data.y
         let arr = this.deepClone(this.state.arr)
         arr[x][y] = val
-        this.setState({ arr }, this.checkWin)
+        this.setState({ arr },() => {
+            this.checkErrorAndWin(x,y,val)
+        })
     }
 
+    //Show obvious error move
+    checkError = (x,y,val) => {
+        let arr = [], mat = this.state.arr
+        if(!val) return this.setState({errorCells:[]})
+        //Check col
+        for(let i = 0; i < SIZE; i++){
+            if(mat[i][y] == val && i != x) arr.push([i,y])
+        }
+        //Check row
+        for(let j = 0; j < SIZE; j++){
+            if(mat[x][j] == val && j != y) arr.push([x,j])
+        }
+        //Check box
+        let i = Math.floor(x/SQRT) * SQRT, j = Math.floor(y/SQRT) * SQRT
+        for(let a = 0; a < SQRT; a++){
+            for(let b = 0; b < SQRT; b++){
+                if(mat[i + a][j + b] == val && (i + a) != x && (j + b) != y) arr.push([i+a,j+b])
+            }
+        }
+        if(arr.length > 0) arr.push([x,y])
+        this.setState({
+            errorCells:arr
+        })
+        return arr.length > 0;
+    }
+
+    //Is error related cells
+    isErrorCells = (i, j) => {
+        for(let k = 0; k < this.state.errorCells.length; k++){
+            let coor = this.state.errorCells[k]
+            if(coor[0] == i && coor[1] == j) return true
+        }
+        return false
+    }
+    //Start tracking play time
     startTimer = () => {
         if(!this.state.startTime) {
             this.setState({ startTime: Date.now()})
@@ -276,10 +332,12 @@ export default class Sudoku extends Component {
         }
     }
 
+    //Is cell prefilled with value
     isPrefilledCell = (x, y) => {
         return !!this.state.originalArr[x][y]
     }
 
+    //When player click on cell. High light same number
     highlightNumber = (e) => {
         let div = e.target.parentElement
         let x = +div.dataset.x, y = +div.dataset.y
@@ -296,13 +354,14 @@ export default class Sudoku extends Component {
         }
     }
 
+    //Mobile fill val
     fillVal = (e) => {
         let val = e.target.dataset.num, slot = this.state.selectedSlot
         if (slot) {
             this.startTimer()
             let arr = this.deepClone(this.state.arr)
             arr[slot[0]][slot[1]] = val
-            this.setState({ arr }, this.checkWin)
+            this.setState({ arr }, () => this.checkErrorAndWin(slot[0], slot[1], val))
         }
     }
 
@@ -322,10 +381,11 @@ export default class Sudoku extends Component {
                         {this.state.arr.map((row, i) => (
                             row.map((cell, j) => (
                                 <div className="cell" data-x={i} data-y={j} key={j}>
-                                    <input type="text" value={cell} className={"cell-input " + (this.isPrefilledCell(i, j) ? "" : "slot") + (this.isSelectedSlot(i,j)?" active":"" )} readOnly={this.isPrefilledCell(i, j)}
+                                    <input type="text" value={cell} className={"cell-input " + (this.isErrorCells(i,j)?"error":"") +  (this.isPrefilledCell(i, j) ? "" : "slot") + (this.isSelectedSlot(i,j)?" active":"" )} readOnly={this.isPrefilledCell(i, j)}
                                         style={
                                             { color: this.state.highlight == this.state.arr[i][j] ? "red" : "" }
                                         }
+                                        maxLength="1"
                                         onChange={this.handleChange} value={this.state.arr[i][j]} onClick={this.highlightNumber} />
                                 </div>
                             )

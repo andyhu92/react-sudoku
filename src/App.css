@@ -1,3 +1,60 @@
+.error {
+  -webkit-animation-duration: 1s;
+  animation-duration: 1s;
+  -webkit-animation-fill-mode: both;
+  animation-fill-mode: both;
+  -webkit-animation-name: error;
+  animation-name: error;
+}
+
+@-webkit-keyframes error {
+  from,
+  to {
+    background: white;
+    color:black;
+  }
+
+  10%,
+  50%,
+  90% {
+    background: red;
+    color:white;
+  }
+
+  20%,
+  80% {
+    background: white;
+    color:black;
+  }
+}
+
+@keyframes error {
+  from,
+  to {
+    background: white;
+    color:black;
+  }
+
+  10%,
+  30%,
+  50%,
+  70%,
+  90% {
+    background: red;
+    color:white;
+  }
+
+  20%,
+  40%,
+  60%,
+  80% {
+    background: white;
+    color:black;
+  }
+}
+
+
+
 .App {
   text-align: center;
   box-sizing: border-box;
@@ -82,6 +139,7 @@ ul{
   height: 55px;
   font-size: 1.5rem;
   cursor: pointer;
+  margin:0px;
 }
 
 .slot{
