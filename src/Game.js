@@ -14,7 +14,8 @@ export default class Sudoku extends Component {
             originalArr: null,
             highlight: null,
             selectedSlot: null,
-            startTime:null
+            startTime:null,
+            level:EASY
         }
     }
 
@@ -71,7 +72,19 @@ export default class Sudoku extends Component {
             highlight:null,
             selectedSlot:null,
             startTime:null,
+            level:mode,
             errorCells:[]
+        }, () => {
+            document.querySelectorAll(".cell-input").forEach((elem) => {
+                elem.classList.add("animated")
+                elem.classList.add("fadeIn")
+             })
+            setTimeout(() => {
+                document.querySelectorAll(".animated").forEach((elem) => {
+                    elem.classList.remove("animated")
+                    elem.classList.remove("fadeIn")
+                 })
+            },1000)
         })
     }
 
@@ -228,6 +241,15 @@ export default class Sudoku extends Component {
         } else this.initGame(level);
     }
 
+    getLevel = (level) => {
+        switch(level){
+            case EASY: return 'Easy';
+            case MEDIUM: return 'Medium';
+            case HARD: return 'Hard';
+            default: return 'Easy'
+        }
+    }
+
     notUsedInRow(row, val) {
         for (let j = 0; j < SIZE; j++) {
             if (this.arr[row][j] == val) return false
@@ -375,6 +397,10 @@ export default class Sudoku extends Component {
         if(!this.state.arr) return <div>Initializing...</div>
         return (
             <main>
+                <header className="App-header">
+                    <h1 className="App-title">Sudoku</h1>
+                    <small>{ this.getLevel(this.state.level) }</small>
+                </header>
                 <SelectLevel onSelect={this.chooseLevel} />
                 <div className="wrapper">
                     <div className="board">

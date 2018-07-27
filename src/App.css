@@ -7,6 +7,13 @@
   animation-name: error;
 }
 
+.animated{
+  -webkit-animation-duration: 1s;
+  animation-duration: 1s;
+  -webkit-animation-fill-mode: both;
+  animation-fill-mode: both;
+}
+
 @-webkit-keyframes error {
   from,
   to {
@@ -53,7 +60,34 @@
   }
 }
 
+@-webkit-keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
 
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+small{
+  color:gray;
+}
+
+.fadeIn {
+  -webkit-animation-name: fadeIn;
+  animation-name: fadeIn;
+}
 
 .App {
   text-align: center;
@@ -62,6 +96,7 @@
 
 .App-title {
   font-size: 2.5em;
+  margin-bottom:5px;
 }
 
 .App-intro {
@@ -168,23 +203,50 @@ ul{
   cursor:pointer;
 }
 
+input[type="text"]{
+  -moz-box-sizing:    border-box;
+  -webkit-box-sizing: border-box;
+   box-sizing:        border-box;
+   padding-right:0px;
+   padding-left:0px;
+}
+
+input[readonly] {
+  cursor: pointer;
+}
+
+
+.num-button{
+  width:11%;
+  height: 40px;
+  color: white;
+  padding: 5px;
+  border-radius: 5px;
+  background-color: #302c61;
+  cursor: pointer;
+  font-size: 1.5rem;
+}
+
+.num-button:focus{
+  outline:none;
+}
+
+.num-button:nth-of-type(2n){
+  transform: rotate(5deg);
+}
+
+.num-button:nth-of-type(2n+1){
+  transform: rotate(-5deg);
+}
+
+.num-button:active{
+  background-color: #4d41de;
+}
+
 @media screen and (max-width:600px){
-  input[type="text"]{
-    -moz-box-sizing:    border-box;
-    -webkit-box-sizing: border-box;
-     box-sizing:        border-box;
-     padding-right:0px;
-     padding-left:0px;
-  }
-
-  input[readonly] {
-    cursor: pointer;
-  }
-
   .btn{
     width:100px;
   }
-
   .wrapper{
     width:362px;
     height:362px;
@@ -210,30 +272,40 @@ ul{
     margin-top:20px;
   }
 
+}
+
+@media screen and (max-width:365px){
+  .btn{
+    width:90px;
+    margin:7px;
+  }
+  .wrapper{
+    width:308px;
+    height:310px;
+  }
+
+  .cell{
+    width:32px;
+    height:31px;
+  }
+
+  .cell-input{
+    width: 28px;
+    height: 28px;
+  }
+
+  .cell-input.active{
+    border:1px solid blue;
+  }
+
+  .buttons{
+    display:block;
+    width:100%;
+    margin-top:20px;
+  }
+
   .num-button{
-    width:11%;
-    height: 40px;
-    color: white;
-    padding: 5px;
-    border-radius: 5px;
-    background-color: #302c61;
-    cursor: pointer;
-    font-size: 1.5rem;
-  }
-
-  .num-button:focus{
-    outline:none;
-  }
-
-  .num-button:nth-of-type(2n){
-    transform: rotate(5deg);
-  }
-
-  .num-button:nth-of-type(2n+1){
-    transform: rotate(-5deg);
-  }
-
-  .num-button:active{
-    background-color: #4d41de;
+    height: 35px;
+    font-size: 1rem;
   }
 }
