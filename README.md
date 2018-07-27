@@ -1,4 +1,4 @@
-## React Soduku Game
+## React Sudoku Game
 
 Built with create-react-app
 
