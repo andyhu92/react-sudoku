@@ -93,5 +93,6 @@
   },
   "devDependencies": {
     "babel-loader": "^7.1.2"
-  }
+  },
+  "homepage":"https://andyhu92.github.io/react-sudoku"
 }
