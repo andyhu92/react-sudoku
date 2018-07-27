@@ -205,7 +205,17 @@ export default class Sudoku extends Component {
     }
 
     chooseLevel = (level) => {
-        this.initGame(level);
+        if(this.state.startTime){
+            window.swal({
+                title:"Are you sure?",
+                text:"You will lose current progress",
+                type:"warning",
+                showCancelButton:true,
+                confirmButtonText:"Yes"
+            }).then((res) => {
+                if(res.value) this.initGame(level)
+            })
+        } else this.initGame(level);
     }
 
     notUsedInRow(row, val) {
@@ -274,16 +284,16 @@ export default class Sudoku extends Component {
         let div = e.target.parentElement
         let x = +div.dataset.x, y = +div.dataset.y
         let isSlot = e.target.classList.contains("slot")
+        if(window.screen.width <= 600) e.target.blur()
+        let num = this.state.arr[x][y]
         if (isSlot) {
             this.setState({
-                highlight: null,
+                highlight: num,
                 selectedSlot: [x, y]
             })
-            return
+        } else {
+            this.setState({ highlight: num, selectedSlot: null })
         }
-
-        let num = this.state.arr[x][y]
-        this.setState({ highlight: num, selectedSlot: null })
     }
 
     fillVal = (e) => {
@@ -296,6 +306,12 @@ export default class Sudoku extends Component {
         }
     }
 
+    isSelectedSlot = (i,j) => {
+        let slot = this.state.selectedSlot
+        if(!slot) return false
+        return slot[0] == i && slot[1] == j
+    }
+
     render() {
         if(!this.state.arr) return <div>Initializing...</div>
         return (
@@ -306,9 +322,9 @@ export default class Sudoku extends Component {
                         {this.state.arr.map((row, i) => (
                             row.map((cell, j) => (
                                 <div className="cell" data-x={i} data-y={j} key={j}>
-                                    <input type="text" value={cell} className={"cell-input " + (this.isPrefilledCell(i, j) ? "" : "slot")} readOnly={this.isPrefilledCell(i, j)}
+                                    <input type="text" value={cell} className={"cell-input " + (this.isPrefilledCell(i, j) ? "" : "slot") + (this.isSelectedSlot(i,j)?" active":"" )} readOnly={this.isPrefilledCell(i, j)}
                                         style={
-                                            { color: this.state.highlight == this.state.arr[i][j] ? "red" : "black" }
+                                            { color: this.state.highlight == this.state.arr[i][j] ? "red" : "" }
                                         }
                                         onChange={this.handleChange} value={this.state.arr[i][j]} onClick={this.highlightNumber} />
                                 </div>
