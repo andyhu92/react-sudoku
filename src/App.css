@@ -207,8 +207,7 @@ input[type="text"]{
   -moz-box-sizing:    border-box;
   -webkit-box-sizing: border-box;
    box-sizing:        border-box;
-   padding-right:0px;
-   padding-left:0px;
+   padding:0px;
 }
 
 input[readonly] {
