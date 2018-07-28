@@ -279,13 +279,14 @@ input[readonly] {
     margin:7px;
   }
   .wrapper{
-    width:308px;
-    height:310px;
+    width:303px;
+    height:303px;
   }
 
   .cell{
-    width:32px;
-    height:31px;
+    box-sizing: border-box;
+    width:33px;
+    height:33px;
   }
 
   .cell-input{
